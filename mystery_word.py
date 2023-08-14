@@ -173,7 +173,7 @@ def play_game():
         elif user_yes_or_no == 'n':
             print('')
             print('Good playing! See you next time.')
-
+            return # need return statement to end game. 
         else:
             print('Invalid choice. Please enter "y" or "n" to play again')
             return restart_game()
@@ -194,13 +194,11 @@ def play_game():
     #     choose_difficulty()
     #     get_mystery_word()
     #     display_starting_menu()
-    # Print colored text
 
+    # Introduction Text
     print('')
     print(Fore.RED + Style.BRIGHT + "Welcome to Hangman!" + Style.RESET_ALL)
     print(Fore.GREEN + Style.BRIGHT + "Guess the letters to save the hangman!" + Style.RESET_ALL)
-
-    # Testing Coloroma
 
     difficulty_level = choose_difficulty()
     print(f"You chose {difficulty_level} difficulty.")
@@ -208,7 +206,7 @@ def play_game():
     # Choose a word randomly (one word on each line)
     mystery_word = get_mystery_word(difficulty_level)
     
-    reveal_update = '_________'
+    display_word = '_______________________________'
 
     # display start
     print('')
@@ -229,7 +227,7 @@ def play_game():
                 if mystery_word[j] == user_guess:
                     build_word += mystery_word[j]
                 else:
-                    build_word += reveal_update[j]
+                    build_word += display_word[j]
             
             if user_guess not in mystery_word:
                 miss += 1
@@ -238,15 +236,15 @@ def play_game():
                 print(f'Great guess! Misses: {number_of_guesses-miss}')
             
             print('---------------------------------------------')
-            reveal_update = build_word
+            display_word = build_word
             print(draw_hangman(miss))
-            print(reveal_update)
+            print(display_word)
             print('')
 
-            if reveal_update == mystery_word:
+            if display_word == mystery_word:
                 print(f'You got it! Misses: {miss}')
-                
-                break
+                restart_game()
+                return # exit the game loop 
 
             if miss == number_of_guesses:
                 dead_prompt = f"""
@@ -255,6 +253,7 @@ def play_game():
     """     
                 print(dead_prompt)
                 restart_game()
+                return # exit the game loop 
 
 
 if __name__ == "__main__":
